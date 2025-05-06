@@ -13,6 +13,8 @@ class Candidate(models.Model):
     resume = models.FileField(upload_to='resumes/')
     skills = models.JSONField(default=list)  # Extracted by NLP
     experience = models.IntegerField(default=0)  # In years
+    summary = models.TextField(blank=True, null=True)  
+    resume_text = models.TextField(blank=True, null=True) 
 
 class Match(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)

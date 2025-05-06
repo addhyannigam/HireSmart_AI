@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls import path
+from analyzer.views import UploadResumeView, JobMatchView
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('upload-resume/', UploadResumeView.as_view(), name='upload_resume'),
+    path('job-matches/', JobMatchView.as_view(), name='job_matches')
 ]
