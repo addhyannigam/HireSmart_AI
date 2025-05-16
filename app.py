@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
 import random
-import time,datetime
-from database.operations import initialize_database, insert_user_data, get_all_user_data
+import time
+from datetime import datetime
+from database.operations import initialize_database, insert_data, get_all_user_data
 from pipelines.resume_parser import parse_resume, pdf_reader
 from pipelines.skill_analyzer import analyze_skills, determine_experience_level, analyze_resume
 from utils.file_handlers import show_pdf, save_uploaded_file, display_image
@@ -74,7 +75,7 @@ def user_pipeline():
             resume_score = analyze_resume(resume_text,cand_level,resume_data,reco_field,recommended_skills,get_timestamp,rec_course)
             
             # Prepare and insert user data
-            def analyze_resume_to_insert(resume_text, resume_data, reco_field, cand_level, recommended_skills, rec_course):
+            def analyze_resume_to_insert(resume_text, resume_data,reco_field, cand_level, recommended_skills, rec_course):
                 user_data = UserData(
                     name=resume_data['name'],
                     email=resume_data['email'],
@@ -87,9 +88,13 @@ def user_pipeline():
                     recommended_skills=str(recommended_skills),
                     recommended_courses=str(rec_course)
                 ) 
-                insert_user_data(user_data)
+                insert_data(user_data)
 
                 return user_data
+            
+            user_data = analyze_resume_to_insert(resume_text, resume_data, reco_field, cand_level, recommended_skills, rec_course)
+            st.success("Resume data saved successfully!")
+
             
             
         except Exception as e:

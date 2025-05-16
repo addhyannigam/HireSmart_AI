@@ -34,29 +34,37 @@ def initialize_database():
     finally:
         connection.close()
 
-def insert_user_data(user_data: UserData):
+def insert_data(user_data):
     connection = create_connection()
+    cursor = connection.cursor()
+    DB_table_name = 'user_data'
+    
+    insert_sql = f"""
+        INSERT INTO {DB_table_name}
+        VALUES (0, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+    rec_values = (
+        user_data.name,
+        user_data.email,
+        user_data.resume_score,
+        user_data.timestamp,
+        user_data.no_of_pages,
+        user_data.predicted_field,
+        user_data.user_level,
+        user_data.actual_skills,
+        user_data.recommended_skills,
+        user_data.recommended_courses
+    )
+    
     try:
-        with connection.cursor() as cursor:
-            insert_sql = """
-            INSERT INTO user_data 
-            VALUES (0, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            """
-            cursor.execute(insert_sql, (
-                user_data.name,
-                user_data.email,
-                user_data.resume_score,
-                user_data.timestamp,
-                user_data.no_of_pages,
-                user_data.predicted_field,
-                user_data.user_level,
-                user_data.actual_skills,
-                user_data.recommended_skills,
-                user_data.recommended_courses
-            ))
+        cursor.execute(insert_sql, rec_values)
         connection.commit()
+        print("✅ Resume data inserted into MySQL.")
+    except Exception as e:
+        print("❌ Error inserting data:", e)
     finally:
         connection.close()
+
 
 def get_all_user_data():
     connection = create_connection()

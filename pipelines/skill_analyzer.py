@@ -87,7 +87,7 @@ def analyze_resume(resume_text, resume_data, reco_field, cand_level, recommended
 
     # Check for Declaration
     if 'Experience' in resume_text:
-        resume_score += 20
+        resume_score += 15
         st.markdown('''<h5 style='text-align: left; color: #1ed760;'>[+] Awesome! You have added Declaration</h5>''', unsafe_allow_html=True)
     else:
         st.markdown('''<h5 style='text-align: left; color: #000000;'>[-] Please add Declaration</h5>''', unsafe_allow_html=True)

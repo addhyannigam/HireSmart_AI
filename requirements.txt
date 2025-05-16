@@ -1,11 +1,8 @@
-pdfminer3
+pdfminer.six
 pyresparser
 streamlit
 pandas
-youtube-dl
+yt-dlp
 plotly
 pymysql
-streamlit-tags
-Pillow
-spacy
-nltk
+numpy==1.21.6
