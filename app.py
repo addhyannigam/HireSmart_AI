@@ -3,7 +3,7 @@ import pandas as pd
 import random
 import time
 from datetime import datetime
-from database.operations import initialize_database, insert_data, get_all_user_data
+from database.operations import initialize_database, insert_data, get_all_user_data, display_admin_insights
 from pipelines.resume_parser import parse_resume, pdf_reader
 from pipelines.skill_analyzer import analyze_skills, determine_experience_level, analyze_resume
 from utils.file_handlers import show_pdf, save_uploaded_file, display_image
@@ -75,7 +75,7 @@ def user_pipeline():
             resume_score = analyze_resume(resume_text,cand_level,resume_data,reco_field,recommended_skills,get_timestamp,rec_course)
             
             # Prepare and insert user data
-            def analyze_resume_to_insert(resume_text, resume_data,reco_field, cand_level, recommended_skills, rec_course):
+            def analyze_resume_to_insert(resume_text, resume_data,reco_field, cand_level, recommended_skills, rec_course, resume_score):
                 user_data = UserData(
                     name=resume_data['name'],
                     email=resume_data['email'],
@@ -92,9 +92,8 @@ def user_pipeline():
 
                 return user_data
             
-            user_data = analyze_resume_to_insert(resume_text, resume_data, reco_field, cand_level, recommended_skills, rec_course)
+            user_data = analyze_resume_to_insert(resume_text, resume_data, reco_field, cand_level, recommended_skills, rec_course, resume_score)
             st.success("Resume data saved successfully!")
-
             
             
         except Exception as e:
@@ -120,11 +119,12 @@ def display_admin_data():
     df = pd.DataFrame(data, columns=['ID', 'Name', 'Email', 'Resume Score', 'Timestamp', 'Total Page',
                                     'Predicted Field', 'User Level', 'Actual Skills', 'Recommended Skills',
                                     'Recommended Course'])
-    st.dataframe(df)
+    st.dataframe(df.set_index('ID'))
     st.markdown(get_table_download_link(df, 'User_Data.csv', 'Download Report'), unsafe_allow_html=True)
     
-    # Visualizations
-    # ... (rest of your admin visualization code)
+    # Admin side visualizations - 
+    st.title("Admin Dashboard 📊")
+    display_admin_insights() 
 
 def main():
     st.set_page_config(

@@ -133,3 +133,5 @@ def analyze_resume(resume_text, resume_data, reco_field, cand_level, recommended
     st.success(f'** Your Resume Writing Score: {resume_score}**')
     st.warning("** Note: This score is calculated based on the content that you have in your Resume. **")
     st.balloons()
+
+    return resume_score

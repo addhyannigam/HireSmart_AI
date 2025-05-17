@@ -1,6 +1,9 @@
 import pymysql
+import streamlit as st
 from config.settings import DB_CONFIG
 from database.models import UserData
+import pandas as pd 
+import plotly.express as px
 
 def create_connection():
     return pymysql.connect(**DB_CONFIG)
@@ -74,3 +77,39 @@ def get_all_user_data():
             return cursor.fetchall()
     finally:
         connection.close()
+
+def display_admin_insights():
+    try:
+        connection = create_connection()
+        query = 'SELECT * FROM user_data;'
+        plot_data = pd.read_sql(query, connection)
+
+        # Decode BLOB columns (Predicted_Field, User_level, etc.)
+        for col in plot_data.columns:
+            if plot_data[col].dtype == object:
+                plot_data[col] = plot_data[col].apply(lambda x: x.decode('utf-8') if isinstance(x, bytes) else x)
+
+        # --- Pie chart for predicted field recommendation ---
+        if 'Predicted_Field' in plot_data.columns:
+            field_counts = plot_data['Predicted_Field'].value_counts().reset_index()
+            field_counts.columns = ['Predicted_Field', 'Count']
+            st.subheader("**Pie-Chart for Predicted Field Recommendation**")
+            fig = px.pie(field_counts, values='Count', names='Predicted_Field',
+                         title='Predicted Field according to the Skills')
+            st.plotly_chart(fig)
+        else:
+            st.warning("Column 'Predicted_Field' not found in user_data.")
+
+        # --- Pie chart for user level ---
+        if 'User_level' in plot_data.columns:
+            level_counts = plot_data['User_level'].value_counts().reset_index()
+            level_counts.columns = ['User_level', 'Count']
+            st.subheader("**Pie-Chart for User's Experienced Level**")
+            fig = px.pie(level_counts, values='Count', names='User_level',
+                         title="Pie-Chart📈 for User's👨‍💻 Experienced Level")
+            st.plotly_chart(fig)
+        else:
+            st.warning("Column 'User_level' not found in user_data.")
+
+    except Exception as e:
+        st.error(f"Error while fetching or visualizing data: {e}")
