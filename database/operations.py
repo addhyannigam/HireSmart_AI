@@ -78,6 +78,19 @@ def get_all_user_data():
     finally:
         connection.close()
 
+def delete_user_data(user_id):
+    connection = create_connection()
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM user_data WHERE ID = %s", (user_id,))
+        connection.commit()
+        st.success(f"Deleted user with ID {user_id}")
+    except Exception as e:
+        st.error(f"Error deleting user: {e}")
+    finally:
+        connection.close()
+
+
 def display_admin_insights():
     try:
         connection = create_connection()

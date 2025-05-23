@@ -3,7 +3,7 @@ import pandas as pd
 import random
 import time
 from datetime import datetime
-from database.operations import initialize_database, insert_data, get_all_user_data, display_admin_insights
+from database.operations import initialize_database, insert_data, get_all_user_data, delete_user_data, display_admin_insights
 from pipelines.resume_parser import parse_resume, pdf_reader
 from pipelines.skill_analyzer import analyze_skills, determine_experience_level, analyze_resume
 from utils.file_handlers import show_pdf, save_uploaded_file, display_image
@@ -11,6 +11,7 @@ from utils.helpers import get_table_download_link, fetch_yt_video, get_timestamp
 from Courses import ds_course, web_course, android_course, ios_course, uiux_course, resume_videos, interview_videos
 from config.settings import APP_CONFIG
 from database.models import UserData
+
 
 # Initialize database
 initialize_database()
@@ -43,6 +44,7 @@ def user_pipeline():
             resume_info = parse_resume(save_path)
             resume_data = resume_info['data']
             resume_text = resume_info['text']
+            print(resume_info)
             
             # Display basic info
             st.header("**Resume Analysis**")
@@ -94,6 +96,21 @@ def user_pipeline():
             
             user_data = analyze_resume_to_insert(resume_text, resume_data, reco_field, cand_level, recommended_skills, rec_course, resume_score)
             st.success("Resume data saved successfully!")
+
+            ## Resume writing video
+            st.header("**Bonus Video for Resume Writing Tips💡**")
+            resume_vid = random.choice(resume_videos)
+            res_vid_title = fetch_yt_video(resume_vid)
+            st.subheader("✅ **"+res_vid_title+"**")
+            st.video(resume_vid)
+
+
+            ## Interview Preparation Video
+            st.header("**Bonus Video for Interview Tips💡**")
+            interview_vid = random.choice(interview_videos)
+            int_vid_title = fetch_yt_video(interview_vid)
+            st.subheader("✅ **" + int_vid_title + "**")
+            st.video(interview_vid)
             
             
         except Exception as e:
@@ -124,9 +141,10 @@ def display_admin_data():
     
     # Admin side visualizations - 
     st.title("Admin Dashboard 📊")
-    display_admin_insights() 
-
+    display_admin_insights()
+    
 def main():
+    
     st.set_page_config(
         page_title=APP_CONFIG['page_title'],
         page_icon=APP_CONFIG['page_icon']
