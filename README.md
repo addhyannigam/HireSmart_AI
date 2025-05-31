@@ -1,4 +1,4 @@
-🚀 HireSmart AI
+# 🚀 HireSmart AI
 HireSmart AI is an AI-powered Resume Analyzer and Job Matcher platform designed to assist recruiters and job seekers by providing intelligent insights into resumes and job roles. It uses advanced natural language processing (NLP) and machine learning techniques to evaluate candidate levels, match them with job descriptions, and provide recommendations—all with a user-friendly Streamlit frontend and Firebase backend.
 
 📌 Features
