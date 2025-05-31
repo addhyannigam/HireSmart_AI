@@ -1,0 +1,16 @@
+streamlit
+streamlit_option_menu
+pdfplumber
+spacy
+scikit-learn
+pandas
+numpy
+firebase-admin
+google-cloud-firestore
+openai
+pyresparser
+pyrebase4
+matplotlib
+seaborn
+google-generativeai
+python -m spacy download en_core_web_sm
