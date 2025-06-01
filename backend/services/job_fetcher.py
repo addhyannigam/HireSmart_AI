@@ -1,11 +1,14 @@
 import pdfplumber
 import spacy
-from google import genai
-
 import Courses as cs
+from google.generativeai import configure, GenerativeModel
+
 
 nlp = spacy.load("en_core_web_sm")
-client = genai.Client(api_key="")
+
+configure(api_key="YOUR-API-KEY")
+model = GenerativeModel("gemini-1.5-flash")
+
 
 def extract_text_from_pdf(pdf_path):
     with pdfplumber.open(pdf_path) as pdf:
@@ -99,12 +102,7 @@ def get_job_suggestions(pdf_path):
 
     Format the response clearly using bullet points or headings so it’s easy to read."""
 
-
-    
-    response = client.models.generate_content(
-        model="gemini-1.5-flash",
-        contents=prompt
-    )
+    response = model.generate_content(prompt)
     return skills, response.text
 
 def get_job_recommendations_with_courses(skills, job_recommendations):

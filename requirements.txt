@@ -1,6 +1,8 @@
 streamlit
 streamlit_option_menu
+streamlit_tags
 pdfplumber
+pdfminer3
 spacy
 scikit-learn
 pandas
@@ -13,4 +15,5 @@ pyrebase4
 matplotlib
 seaborn
 google-generativeai
-python -m spacy download en_core_web_sm
+yt-dlp
+plotly
