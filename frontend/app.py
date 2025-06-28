@@ -3,16 +3,34 @@ import os
 import streamlit as st
 from streamlit_option_menu import option_menu
 from PIL import Image
+import base64
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname("frontend/"), '..')))
 
 from frontend import hr, user
 from backend.database import firebase as fb  # Pyrebase config
 
+
 st.set_page_config(
     page_title="HireSmart AI",
     page_icon="frontend/Desings/favicon.png",
     layout="centered"
+)
+
+def get_image_as_base64(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+img_base64 = get_image_as_base64("frontend/Desings/image-removebg-preview.png")
+
+st.markdown(
+    f"""
+    <div style="position: fixed; top: 40px; right: 40px;">
+        <img src="data:image/png;base64,{img_base64}" width="100">
+    </div>
+    """,
+    unsafe_allow_html=True
 )
 
 # Initialize session state variables

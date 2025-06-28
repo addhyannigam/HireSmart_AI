@@ -1,5 +1,6 @@
 # user.py
 import streamlit as st
+import base64
 from streamlit_tags import st_tags
 from streamlit_option_menu import option_menu
 import base64
@@ -20,6 +21,21 @@ import random
 import csv
 from datetime import datetime
 
+def get_image_as_base64(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+img_base64 = get_image_as_base64("frontend/Desings/image-removebg-preview.png")
+
+st.markdown(
+    f"""
+    <div style="position: fixed; top: 40px; right: 40px;">
+        <img src="data:image/png;base64,{img_base64}" width="100">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 
 
@@ -55,7 +71,7 @@ def show_user_page():
 
     # -------------- RESUME ANALYZER -------------- #
     elif selected == "Resume Analyzer":
-        st.title("📄 Resume Analyzer")
+        st.title("📄Resume Analyzer")
         uploaded_resume = st.file_uploader("Upload Your Resume (PDF format)", type=["pdf"])
 
         if uploaded_resume is not None:
