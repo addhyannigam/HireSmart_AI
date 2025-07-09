@@ -14,7 +14,6 @@ pyresparser
 pyrebase4
 matplotlib
 seaborn
-google-generativeai
+google-generativeai == 0.5.3
 yt-dlp
 plotly
-en_core_web_sm

@@ -26,7 +26,7 @@ def get_image_as_base64(file_path):
         data = f.read()
     return base64.b64encode(data).decode()
 
-img_base64 = get_image_as_base64("frontend/Desings/image-removebg-preview.png")
+img_base64 = get_image_as_base64("frontend/Desings/falcons.png")
 
 st.markdown(
     f"""
@@ -163,19 +163,27 @@ def show_user_page():
     # -------------- JOB SUGGESTIONS -------------- #
     elif selected == "Job Suggestions":
         st.title("🔍 Job Suggestions")
+
+        # 1. Add experience level input
+        Experience = st.selectbox("Select your experience level:", ["Intern", "Fresher", "Experienced"])
+
+        # 2. Upload resume
         uploaded_resume = st.file_uploader("Upload Resume for Job Matching", type=["pdf"])
         if uploaded_resume is not None:
             save_path = os.path.join("Uploaded_Resumes", uploaded_resume.name)
             with open(save_path, "wb") as f:
                 f.write(uploaded_resume.read())
 
+            # 3. Analyze resume with experience level
             with st.spinner("Analyzing your resume..."):
-                    skills, suggestions = get_job_suggestions(save_path)
-                    st.subheader("Extracted Skills")
-                    st.write(skills)
+                skills, suggestions = get_job_suggestions(save_path, Experience)
 
-                    st.subheader("Suggested Job Roles")
-                    st.write(suggestions)
+                st.subheader("Extracted Skills")
+                st.write(skills)
+
+                st.subheader("Suggested Job Roles")
+                st.write(suggestions)
+
 
     # -------------- CONTACT US -------------- #
     elif selected == "Contact Us":

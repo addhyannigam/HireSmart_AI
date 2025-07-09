@@ -22,7 +22,7 @@ def get_image_as_base64(file_path):
         data = f.read()
     return base64.b64encode(data).decode()
 
-img_base64 = get_image_as_base64("frontend/Desings/image-removebg-preview.png")
+img_base64 = get_image_as_base64("frontend/Desings/falcons.png")
 
 st.markdown(
     f"""

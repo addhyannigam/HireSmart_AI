@@ -18,7 +18,7 @@ def get_image_as_base64(file_path):
         data = f.read()
     return base64.b64encode(data).decode()
 
-img_base64 = get_image_as_base64("frontend/Desings/image-removebg-preview.png")
+img_base64 = get_image_as_base64("frontend/Desings/falcons.png")
 
 st.markdown(
     f"""
@@ -121,6 +121,20 @@ def show_admin_page():
                 col1, col2 = st.columns([3, 1])
                 with col1:
                     st.write(f"**{row['username']}** | {user_email} | Role: {user_role}")
+
+                    if uid:
+                        # Fetch existing HR comment if any
+                        existing_comment = all_users[uid].get("hr_comment", "")
+                        comment_input = st.text_input(
+                            f"📝 HR Comment for {row['username']}", 
+                            value=existing_comment, 
+                            key=f"comment_{uid}"
+                        )
+                        if st.button("💾 Save Comment", key=f"save_{uid}"):
+                            fb.rdb.child("users").child(uid).update({"hr_comment": comment_input})
+                            st.success(f"Comment saved for {row['username']}")
+                            st.rerun()
+
                 with col2:
                     if st.button(f"Delete", key=user_email):
                         if uid:

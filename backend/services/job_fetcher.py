@@ -6,7 +6,7 @@ from google.generativeai import configure, GenerativeModel
 
 nlp = spacy.load("en_core_web_sm")
 
-configure(api_key="your_api_key")
+configure(api_key="AIzaSyC_js-vXO8oHCbR-PLBXOqlSGkc9SrLqBI")
 model = GenerativeModel("gemini-1.5-flash")
 
 
@@ -89,21 +89,26 @@ def extract_skills(text, skill_set=None):
             found.add(skill)
     return list(found)
 
-def get_job_suggestions(pdf_path):
+def get_job_suggestions(pdf_path, user_level):  # Add user_level (e.g., "Fresher")
     text = extract_text_from_pdf(pdf_path)
     skills = extract_skills(text)
-    prompt = f"""Based on the following skill set: {skills}, suggest relevant job roles and job titles. 
-    Categorize the suggestions by experience level (Entry-Level, Mid-Level, and Senior-Level). 
-    For each category, include:
 
-    - The job role
-    - A list of 3-5 possible job titles under that role
-    - Recommend some skills to add to resume that can increase the chance of job suitability
+    prompt = f"""I have the following skills: {skills}. 
+        I am currently looking for a {user_level} role.
 
-    Format the response clearly using bullet points or headings so it’s easy to read."""
+        Suggest relevant job roles and job titles suitable for my skillset and experience level. 
+        Categorize suggestions by experience level, but **prioritize {user_level} jobs**.
+
+        For each suggestion, include:
+        - Job role
+        - 3-5 job titles under that role
+        - Additional skills I should add to improve my resume
+
+        Format the result with headings and bullet points for readability."""
 
     response = model.generate_content(prompt)
     return skills, response.text
+
 
 def get_job_recommendations_with_courses(skills, job_recommendations):
     results = []
