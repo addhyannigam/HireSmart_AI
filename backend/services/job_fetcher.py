@@ -6,7 +6,7 @@ from google.generativeai import configure, GenerativeModel
 
 nlp = spacy.load("en_core_web_sm")
 
-configure(api_key="AIzaSyC_js-vXO8oHCbR-PLBXOqlSGkc9SrLqBI")
+configure(api_key="YOUR-API-KEY")
 model = GenerativeModel("gemini-1.5-flash")
 
 
